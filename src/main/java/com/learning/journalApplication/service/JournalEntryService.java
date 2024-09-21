@@ -21,11 +21,6 @@ public class JournalEntryService {
     @Autowired
     private UserService _userService;
 
-    public List<JournalEntry> getAllEntries(){
-        List<JournalEntry> journalEntries = _journalEntryRepository.findAll();
-        return journalEntries;
-    }
-
     public Optional<JournalEntry> getEntryById(ObjectId id){
         Optional<JournalEntry> journalEntry = _journalEntryRepository.findById(id);
         return journalEntry;

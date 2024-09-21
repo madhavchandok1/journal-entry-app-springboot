@@ -69,12 +69,12 @@ public class JournalEntryController {
         if(oldJournalEntry!=null){
             oldJournalEntry.setTitle(
                     journalEntry.getTitle() !=null &&
-                    !journalEntry.getTitle().equals("") ?
+                    !journalEntry.getTitle().isEmpty() ?
                     journalEntry.getTitle() : oldJournalEntry.getTitle()
             );
             oldJournalEntry.setContent(
                     journalEntry.getContent() != null &&
-                    !journalEntry.getContent().equals("") ?
+                    !journalEntry.getContent().isEmpty() ?
                     journalEntry.getContent() : oldJournalEntry.getContent()
             );
             _journalEntryService.saveEntry(oldJournalEntry);
