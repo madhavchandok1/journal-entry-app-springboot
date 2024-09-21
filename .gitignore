@@ -4,7 +4,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+
 ### STS ###
+.gitignore
+dev.env.properties
 .apt_generated
 .classpath
 .factorypath

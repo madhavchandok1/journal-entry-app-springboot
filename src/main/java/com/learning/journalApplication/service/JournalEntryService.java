@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,6 +27,7 @@ public class JournalEntryService {
         return journalEntry;
     }
 
+    @Transactional
     public void saveEntry(JournalEntry journalEntry, String userName){
         try{
             User user = _userService.findUserByUserName(userName);
@@ -43,6 +45,7 @@ public class JournalEntryService {
         _journalEntryRepository.save(journalEntry);
     }
 
+    @Transactional
     public void deleteEntry(ObjectId id, String userName){
         User user = _userService.findUserByUserName(userName);
         user.getJournalEntries().removeIf(journalEntry -> journalEntry.getId().equals(id));
