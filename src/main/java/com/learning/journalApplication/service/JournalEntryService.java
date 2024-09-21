@@ -1,6 +1,7 @@
 package com.learning.journalApplication.service;
 
 import com.learning.journalApplication.entity.JournalEntry;
+import com.learning.journalApplication.entity.User;
 import com.learning.journalApplication.repository.JournalEntryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
@@ -17,30 +18,35 @@ public class JournalEntryService {
     @Autowired
     private JournalEntryRepository _journalEntryRepository;
 
-    public List<JournalEntry> getAllEntries(){
-        List<JournalEntry> journalEntries = _journalEntryRepository.findAll();
-        return journalEntries;
-    }
+    @Autowired
+    private UserService _userService;
 
     public Optional<JournalEntry> getEntryById(ObjectId id){
         Optional<JournalEntry> journalEntry = _journalEntryRepository.findById(id);
         return journalEntry;
     }
 
-    public void saveEntry(JournalEntry journalEntry){
+    public void saveEntry(JournalEntry journalEntry, String userName){
         try{
+            User user = _userService.findUserByUserName(userName);
             journalEntry.setDate(LocalDateTime.now());
-            _journalEntryRepository.save(journalEntry);
+            JournalEntry savedJournalEntry = _journalEntryRepository.save(journalEntry);
+            user.getJournalEntries().add(savedJournalEntry);
+            _userService.saveEntry(user);
         }
         catch(Exception exception){
             log.error("Exception", exception);
         }
-
     }
 
-    public JournalEntry deleteEntry(ObjectId id){
-        Optional<JournalEntry> journalEntry = _journalEntryRepository.findById(id);
+    public void saveEntry(JournalEntry journalEntry){
+        _journalEntryRepository.save(journalEntry);
+    }
+
+    public void deleteEntry(ObjectId id, String userName){
+        User user = _userService.findUserByUserName(userName);
+        user.getJournalEntries().removeIf(journalEntry -> journalEntry.getId().equals(id));
+        _userService.saveEntry(user);
         _journalEntryRepository.deleteById(id);
-        return journalEntry.orElse(null);
     }
 }
