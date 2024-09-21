@@ -5,6 +5,8 @@ import com.learning.journalApplication.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,6 +18,8 @@ public class UserService {
     @Autowired
     private UserRepository _userRepository;
 
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     public List<User> getAllUsers(){
         List<User> users = _userRepository.findAll();
         return users;
@@ -25,19 +29,17 @@ public class UserService {
         return _userRepository.findByUserName(userName);
     }
 
-    public void saveEntry(User user){
-        try{
-            _userRepository.save(user);
-        }
-        catch(Exception exception){
-            log.error("Exception", exception);
-        }
-
+    public void saveUser(User user){
+        _userRepository.save(user);
     }
 
-    public User deleteEntry(ObjectId id){
-        Optional<User> user = _userRepository.findById(id);
-        _userRepository.deleteById(id);
-        return user.orElse(null);
+    public void saveNewUser(User user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(List.of("USER"));
+        _userRepository.save(user);
+    }
+
+    public void deleteUser(String userName){
+        _userRepository.deleteByUserName(userName);
     }
 }

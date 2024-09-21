@@ -20,9 +20,12 @@ public class User {
     @Indexed(unique=true)
     @NonNull
     private String userName;
+
     @NonNull
     private String password;
 
     @DBRef
     private List<JournalEntry> journalEntries = new ArrayList<>();
+
+    private List<String> roles;
 }
