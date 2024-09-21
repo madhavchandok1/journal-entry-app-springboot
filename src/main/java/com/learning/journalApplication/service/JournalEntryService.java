@@ -38,6 +38,7 @@ public class JournalEntryService {
         }
         catch(Exception exception){
             log.error("Exception", exception);
+            throw new RuntimeException("An error occurred while saving the entry: ",exception);
         }
     }
 
