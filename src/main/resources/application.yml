@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: journalApplication
+
+  main:
+    allow-circular-references: true
+
+  config:
+    import: file:dev.env.properties
+
+  data:
+    mongodb:
+      uri: ${MONGODB_CONNECTION_STRING}
+      database: ${MONGODB_DATABASE_NAME}
+      auto-index-creation: true
