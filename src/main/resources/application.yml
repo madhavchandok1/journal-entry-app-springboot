@@ -13,3 +13,6 @@ spring:
       uri: ${MONGODB_CONNECTION_STRING}
       database: ${MONGODB_DATABASE_NAME}
       auto-index-creation: true
+
+server:
+  port: 8080
